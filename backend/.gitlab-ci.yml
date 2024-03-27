@@ -1,0 +1,28 @@
+# You can ignore this CI/CD configuration file if you are not using GitLab CI/CD
+# https://docs.gitlab.com/ee/ci/yaml/README.html
+
+# If you are going to use CI/CD, here's our few options:
+# 1. We have setup a custom project scoped job Runner for you.
+# 2. Runner is already setup with Python 3.9 and Node.js 18.
+# 3. Please make sure to use the `external-runner` tag in your CI/CD jobs otherwise any runner will not pick up the job.
+
+# For DIND (Docker in Docker) support:
+# - We do not support for that, as we're here only focusing on Python and Node.js
+# - So please keep in mind that you cannot use the `docker` command in your CI/CD scripts
+
+stages:
+  - "test"
+
+test-job:
+  tags:
+    - external-runner
+  stage: test
+  image: nikolaik/python-nodejs:python3.9-nodejs18-slim
+  before_script:
+    - pip3 install virtualenv
+    - virtualenv -p python3 venv
+    - source venv/bin/activate
+    - pip install -q -r requirements.txt
+  script:
+    - python3 -V
+    - node -v
